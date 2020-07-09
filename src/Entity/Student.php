@@ -65,7 +65,6 @@ class Student
     }
 
 
-
     public function getId(): ?int
     {
         return $this->id;

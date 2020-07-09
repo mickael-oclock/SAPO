@@ -72,22 +72,52 @@ class ApiAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
 
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
 
-        if (!$user){
+        if (!$user) {
             $user = $this->importUserFromCockpit($credentials);
-            if (!$user)  throw new CustomUserMessageAuthenticationException('Email could not be found.');
+            if (!$user) throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
         return $user;
+    }
+
+    protected function importUserFromCockpit($credentials)
+    {
+        $apiUser = $this->cockpitApiClient->auth($credentials['email'], $credentials['password']);
+        if ($apiUser) {
+            $user = new User();
+            $user->setPassword($credentials['password']);
+            $user->setEmail($apiUser->getEmail());
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+            return $user;
+        }
+        return false;
     }
 
     public function checkCredentials($credentials, UserInterface $user)
     {
         // we can check if LocalPassword still working
-        if ($this->passwordEncoder->isPasswordValid($user, $credentials['password'])){
+        if ($this->passwordEncoder->isPasswordValid($user, $credentials['password'])) {
             return true;
-        }else{
+        } else {
             // if not Check And Update CockpitCredential
-            return $this->updateLocalCredentials($credentials,$user);
+            return $this->updateLocalCredentials($credentials, $user);
         }
+    }
+
+    protected function updateLocalCredentials(array $credentials, UserInterface $user)
+    {
+        if ($this->checkCockpitCredentials($credentials)) {
+            $user->setPassword($credentials['password']);
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+            return true;
+        }
+        return false;
+    }
+
+    protected function checkCockpitCredentials(array $credentials)
+    {
+        return $this->cockpitApiClient->auth($credentials['email'], $credentials['password']);
     }
 
     /**
@@ -109,31 +139,6 @@ class ApiAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
     protected function getLoginUrl()
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
-    }
-
-    protected function importUserFromCockpit($credentials){
-        $apiUser = $this->cockpitApiClient->auth($credentials['email'],$credentials['password']);
-        if($apiUser){
-            $user = new User();
-            $user->setPassword($credentials['password']);
-            $user->setEmail($apiUser->getEmail());
-            $this->entityManager->persist($user);
-            $this->entityManager->flush();
-            return $user;
-        }
-        return false;
-    }
-    protected function checkCockpitCredentials(array $credentials){
-        return $this->cockpitApiClient->auth($credentials['email'],$credentials['password']);
-    }
-    protected  function updateLocalCredentials(array $credentials,UserInterface $user){
-        if($this->checkCockpitCredentials($credentials)){
-            $user->setPassword($credentials['password']);
-            $this->entityManager->persist($user);
-            $this->entityManager->flush();
-            return true;
-        }
-        return false;
     }
 
 }

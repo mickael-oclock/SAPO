@@ -82,7 +82,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -104,9 +104,10 @@ class User implements UserInterface
         return $this;
     }
 
-    public function addRole($role){
+    public function addRole($role)
+    {
 
-        if(!in_array($role,$this->roles))$this->roles[] = $role;
+        if (!in_array($role, $this->roles)) $this->roles[] = $role;
         return $this;
     }
 
@@ -115,7 +116,7 @@ class User implements UserInterface
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return (string)$this->password;
     }
 
     public function setPassword(string $password): self

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\UserTokenType;
+use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,7 +34,7 @@ class SecurityController extends AbstractController
      */
     public function logout()
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        throw new LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
     /**
@@ -42,20 +43,20 @@ class SecurityController extends AbstractController
     public function setToken(Request $request)
     {
         $user = $this->getUser();
-        $formOptions = ["method" => Request::METHOD_POST,"action" => $this->generateUrl("app_set_token")];
-        $form = $this->createForm(UserTokenType::class,$user,$formOptions);
+        $formOptions = ["method" => Request::METHOD_POST, "action" => $this->generateUrl("app_set_token")];
+        $form = $this->createForm(UserTokenType::class, $user, $formOptions);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
-            $this->addFlash('success',"Votre token est mis à jour");
+            $this->addFlash('success', "Votre token est mis à jour");
             return $this->redirectToRoute('promo');
-        }else{
+        } else {
             // todo handle stuff here if needed
         }
 
-        return $this->render('security/setToken.html.twig',[
+        return $this->render('security/setToken.html.twig', [
             'form' => $form->createView()
         ]);
     }

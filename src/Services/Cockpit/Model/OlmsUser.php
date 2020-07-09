@@ -17,31 +17,6 @@ class OlmsUser
     {
 
     }
-    private function hydrate($rawData){
-        $data = json_encode($rawData);
-        foreach ($data as $key => $value) {
-            if(strpos("_",$key) !== false){
-                $method = 'set';
-                foreach (str_split("_",$key) as $chunk){
-                    $method.ucfirst($chunk);
-                }
-            }else{
-                $method = "set".ucfirst($key);
-            }
-            dump($method);
-            //if(method_exists($this,$method)){
-            //   $this->$method($value);
-            //}
-        }
-
-        //$this->hydrateProfile($profile);
-    }
-    private function hydrateProfile(){
-
-
-
-
-    }
 
     /**
      * @return mixed
@@ -73,6 +48,33 @@ class OlmsUser
     public function setUsername($username): void
     {
         $this->username = $username;
+    }
+
+    private function hydrate($rawData)
+    {
+        $data = json_encode($rawData);
+        foreach ($data as $key => $value) {
+            if (strpos("_", $key) !== false) {
+                $method = 'set';
+                foreach (str_split("_", $key) as $chunk) {
+                    $method . ucfirst($chunk);
+                }
+            } else {
+                $method = "set" . ucfirst($key);
+            }
+            dump($method);
+            //if(method_exists($this,$method)){
+            //   $this->$method($value);
+            //}
+        }
+
+        //$this->hydrateProfile($profile);
+    }
+
+    private function hydrateProfile()
+    {
+
+
     }
 
 }

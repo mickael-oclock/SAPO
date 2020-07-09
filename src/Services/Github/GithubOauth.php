@@ -2,6 +2,7 @@
 
 
 namespace App\Services\Github;
+
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpClient\HttpOptions;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,33 +14,36 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class GithubOauth
 {
+    const GITHUB_OAUTH_BASE_URL = "https://github.com/login/oauth/";
     private $githubAppId;
     private $githubAppSecret;
     private $githubAppState;
     private $githubAppScope;
     private $githubRedirectUrl;
 
-    const GITHUB_OAUTH_BASE_URL = "https://github.com/login/oauth/";
-
-    public function __construct($githubAppId,$githubAppSecret,$githubAppState,$githubAppScope,$githubRedirectUrl){
-        $this->githubAppId          = $githubAppId;
-        $this->githubAppSecret      = $githubAppSecret;
-        $this->githubAppState       = $githubAppState;
-        $this->githubAppScope       = $githubAppScope;
-        $this->githubRedirectUrl    = $githubRedirectUrl;
+    public function __construct($githubAppId, $githubAppSecret, $githubAppState, $githubAppScope, $githubRedirectUrl)
+    {
+        $this->githubAppId = $githubAppId;
+        $this->githubAppSecret = $githubAppSecret;
+        $this->githubAppState = $githubAppState;
+        $this->githubAppScope = $githubAppScope;
+        $this->githubRedirectUrl = $githubRedirectUrl;
     }
-    public function authorize(){
+
+    public function authorize()
+    {
 
         $httpParams = [
-            "client_id"     => $this->githubAppId,
-            "redirect_uri"  => $this->githubRedirectUrl,
-            "scope"         => $this->githubAppScope,
-            "state"         => $this->githubAppState,
-            "allow_signup"  => false
+            "client_id" => $this->githubAppId,
+            "redirect_uri" => $this->githubRedirectUrl,
+            "scope" => $this->githubAppScope,
+            "state" => $this->githubAppState,
+            "allow_signup" => false
         ];
         $parameters = http_build_query($httpParams);
-        return self::GITHUB_OAUTH_BASE_URL."authorize?".$parameters;
+        return self::GITHUB_OAUTH_BASE_URL . "authorize?" . $parameters;
     }
+
     public function connectAccount($code)
     {
         $httpClient = HttpClient::create();
@@ -49,7 +53,7 @@ class GithubOauth
         ]);
         $httpOptions->setBody([
             'client_id' => $this->githubAppId,
-            "client_secret" =>  $this->githubAppSecret,
+            "client_secret" => $this->githubAppSecret,
             "code" => $code,
             "redirect_uri" => $this->githubRedirectUrl,
             "state" => $this->githubAppState

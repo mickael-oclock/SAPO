@@ -19,12 +19,13 @@ class PromoRepository extends ServiceEntityRepository
         parent::__construct($registry, Promo::class);
     }
 
-    public function findAllStudentCockpitId($id){
-        $data =  $this->createQueryBuilder('p')
-            ->join('p.students','s')
+    public function findAllStudentCockpitId($id)
+    {
+        $data = $this->createQueryBuilder('p')
+            ->join('p.students', 's')
             ->select('s.cockpitId')
-          //  ->where('p.id = :id')
-           // ->setParameter('id',$id)
+            //  ->where('p.id = :id')
+            // ->setParameter('id',$id)
             ->getQuery()->getResult();
         return array_column($data, 'cockpitId');
     }
