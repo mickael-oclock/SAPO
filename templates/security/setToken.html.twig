@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block content %}
+<form method="post">
+     {{ form_start(form) }}
+    <h1 class="h3 mb-3 font-weight-normal">Renseigner votre token de cockpit  </h1>
+    <small>
+        Si tu l'as perdu, pas noté ou simplement jamais eu Tu peux en récupérer un <a href="https://cockpit.oclock.io/">ici</a>
+    </small>
+     {{ form_widget(form.token) }}
+     {{ form_errors(form.token) }}
+    <button class="btn btn-lg btn-primary" type="submit">
+        Enregistrer le token
+    </button>
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+</form>
+{% endblock %}
