@@ -1,0 +1,15 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PromoController!{% endblock %}
+{% block pageTitle %}test {% endblock %}
+{% block content %}
+    <h2>Promo disponibles à l'import</h2>
+    <div class="row">
+        {% for promo in promos %}
+            {% if not promo.child_cohort %}
+                {% include 'parts/_promoCard.html.twig' with {'import' : true} %}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

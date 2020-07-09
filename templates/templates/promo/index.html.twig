@@ -1,0 +1,14 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PromoController!{% endblock %}
+{% block pageTitle %}test {% endblock %}
+{% block content %}
+
+    <h2></h2>
+<div class="row">
+    {% for promo in promos %}
+       {{ dump(promo.students.first) }}
+    {% endfor %}
+</div>
+{% endblock %}

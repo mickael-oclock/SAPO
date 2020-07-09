@@ -1,0 +1,16 @@
+
+{% extends 'base.html.twig' %}
+{% block title %}{% endblock %}
+{% block pageTitle %}Promo {{ promo.nickName}} {% endblock %}
+{% block content %}
+
+    <h2></h2>
+    <div class="row">
+        <a href="{{ path('promo_import_student',{'id':promo.id}) }}">(re)Importer les étudiants</a>
+        <ul>
+        {% for student in promo.students %}
+            <li>{{ student.firstname }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

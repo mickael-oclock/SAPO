@@ -1,0 +1,37 @@
+{% set import = null %}
+<div class="col-sm-12">
+    <div class="card card-stats">
+        <div class="card-body ">
+            <div class="row">
+                <div class="col-sm-3 ">
+                    <div class="icon-big text-center icon-warning">
+                        <i class="nc-icon nc-globe text-warning"></i>
+                        <a href="{{ path('promo_add',{id:promo.id}) }}">Importer cette promo</a>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="numbers">
+                        <p class="card-title">{{ promo.nickname }}</p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <ul class="list-unstyled">
+                        <li>Du  {{promo.start_date.date|date('d/m/Y') }}</li>
+                        <li>Au {{promo.end_date.date|date('d/m/Y') }}</li>
+                    </ul>
+ {{ dump(promo)}}
+                </div>
+            </div>
+        </div>
+        <div class="card-footer ">
+            <hr>
+            <div class="stats">
+                {% if import == true %}
+                <a href="{{ path('promo_import',{id:promo.id}) }}">Importer cette promo depuis le cockpit</a>
+                {% endif %}
+                <i class="fa fa-refresh"></i>
+
+            </div>
+        </div>
+    </div>
+</div>
