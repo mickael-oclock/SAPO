@@ -2,7 +2,11 @@
     "devDependencies": {
         "@symfony/webpack-encore": "^0.30.0",
         "core-js": "^3.0.0",
+        "jquery": "^3.5.1",
+        "node-sass": "^4.14.1",
+        "popper.js": "^1.16.1",
         "regenerator-runtime": "^0.13.2",
+        "sass-loader": "^9.0.2",
         "webpack-notifier": "^1.6.0"
     },
     "license": "UNLICENSED",
@@ -12,5 +16,13 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
+    },
+    "dependencies": {
+        "bootstrap": "^4.5.0",
+        "bootstrap-switch": "^3.4.0",
+        "datatables.net-bs4": "^1.10.21",
+        "moment": "^2.26.0",
+        "perfect-scrollbar": "^1.5.0",
+        "webpack": "^4.43.0"
     }
 }
